@@ -25,11 +25,15 @@ const CreateBlog = () => {
     e.preventDefault();
     try {
       const response = await blogApi.post("/create", data);
+      console.log(response);
       
       
 
       if(response.data.success){
-        toast.success(response.data.msg);
+        
+        toast.success("blog added")
+        
+        
         setTimeout(() => {
           setData({
             title: "",
@@ -47,16 +51,14 @@ const CreateBlog = () => {
           image: "",
           tags: [],
         });
+        navigate('/login')
       }
     } catch (error) {
-      if (error.response) {
-        navigate('/login')
-        toast.error(error.response?.data.msg);
-        navigate('/login')
-      } else {
-        toast.error("An unexpected error occurred");
+      console.log(error);
+      
+      toast.error(error.response ? error.response.data.msg : error.msg)
+      navigate('/login')
       }
-    }
   };
 
   const validValues = data.title.trim() !== "" && data.content.trim() !== "";
@@ -137,4 +139,4 @@ const CreateBlog = () => {
   );
 };
 
-export default CreateBlog;
+export default CreateBlog

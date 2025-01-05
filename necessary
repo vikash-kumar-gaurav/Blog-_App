@@ -1,0 +1,5 @@
+/ = allblogs
+/blog = your blog
+/login = login 
+/register = register
+/blog/blog-create

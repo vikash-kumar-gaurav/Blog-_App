@@ -26,6 +26,10 @@ async function accessTokenvalidator(req,res,next){
 
     } catch (error) {
         console.log(`error from accessTokenvalidator ${error}`);
+        return res.status(500).json({
+            msg : "Server error",
+            succes : false
+        })
         
     }
 }
