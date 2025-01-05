@@ -6,7 +6,9 @@ const app = express();
 import cors from 'cors'
 import userRouter from './src/routes/userRoutes.js'
 import blogRouter from './src/routes/blogRoutes.js'
+import cookieParser from 'cookie-parser';
 app.use(express.json());
+app.use(cookieParser());
 app.use(cors({
     origin: 'http://localhost:5173', // Allow requests from this origin (React app)
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow specific HTTP methods

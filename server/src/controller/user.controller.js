@@ -39,8 +39,8 @@ export async function registerController(req,res){
         const tokenData = jwt.verify(accessToken,process.env.SECRET_TOKEN_KEY)
 
         const cookieOptions ={
-            secure:true,
-            httpOnly:true
+            secure:false,//use true in production
+            httpOnly:true /// the accessToken will not stored in the localStorage so u can't access with js
         }
 
         res.cookie('accessToken',accessToken,cookieOptions)
@@ -103,9 +103,9 @@ export async function loginController(req,res) {
             role:validEmail.role
         })
 
-        const cookieOptions={
-            httpOnly:true,
-            secure:true
+        const cookieOptions ={
+            secure:false,//use true in production
+            httpOnly:true /// the accessToken will not stored in the localStorage so u can't access with js
         }
 
         res.cookie('accessToken',accessToken,cookieOptions)

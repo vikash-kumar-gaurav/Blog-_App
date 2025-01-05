@@ -45,14 +45,14 @@ const Login = () => {
                 console.log(response.data);
                 
                 toast.success(response.data.msg)
-                // setTimeout(() => {
-                //     setdata({
-                //         email:"",
-                //         password:"",
-                //         confirmPassword:""
-                //     })
-                //     navigate('/')
-                // }, 1500);
+                setTimeout(() => {
+                    setdata({
+                        email:"",
+                        password:"",
+                        confirmPassword:""
+                    })
+                    navigate('/')
+                }, 1500);
             } else {                  // manage success is false
                 toast.error(response.data.msg)
                 setdata({
