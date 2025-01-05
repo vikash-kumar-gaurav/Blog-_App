@@ -18,7 +18,8 @@ export async function createBlogController(req,res) {
             content,
             image,
             tags,
-            author:req.username //add username to it in middleware
+           
+            author:req.id //add usernameId to it in middleware
 
         });
 

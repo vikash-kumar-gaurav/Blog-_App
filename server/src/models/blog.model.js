@@ -23,11 +23,13 @@ const blogSchema = new mongoose.Schema({
         type : [String],
         default: []
     },
-    likes : {
+    likes : [
+        {
         type : mongoose.Schema.Types.ObjectId,
         ref : 'User',
         default : [],
-    },
+        }
+    ],
     comments :[
     {
         user: {type : mongoose.Schema.Types.ObjectId, ref : 'User'},

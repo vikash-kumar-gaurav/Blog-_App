@@ -32,8 +32,16 @@ const userSchema = new mongoose.Schema({
     },
     role:{
         type : String,
-        enum:["admin,user"],
+        enum:["admin","user"],
         default:'user'
+    },
+    otp : {
+        type : String,
+        default : ''
+    },
+    isEmailVarified : {
+        type : Boolean,
+        default : false
     }
 },{
     timestamps:true

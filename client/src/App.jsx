@@ -8,7 +8,7 @@ function App() {
 
   return (
     <>
-      <h1>a bloging app is waiting</h1>
+      
     </>
   )
 }
