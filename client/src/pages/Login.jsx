@@ -2,11 +2,16 @@ import React from 'react'
 import { useState } from 'react'
 import { VscEyeClosed } from "react-icons/vsc";
 import { FaEye } from "react-icons/fa";
+import userApi from '../utils/userApi';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+
 
 const Login = () => {
     const[data,setdata] = useState({email:"",password:"",confirmPassword:""})
     const[password,setpassword]= useState(false)
     const[confirmPassword,setconfirmPassword]= useState(false)
+    const navigate = useNavigate()
     
     const handleChange  = (e)=>{
         setdata((previous)=>(
@@ -25,18 +30,45 @@ const Login = () => {
 
     const handleSubmit =async (e)=>{
         e.preventDefault()
-        const response = await axios.post('http://localhost:8080/api/v1/user/login',data)
-        console.log(response.data);
-
+        
         try {
-            if(response.data){
+
+            if(data.confirmPassword !== data.password){
+                toast.error("password and confirm password must be same")
+             return null
+            }
+            const response = await userApi.post('/login',data)
+
+            
+
+            if(response.data.success){ //manage success true
+                console.log(response.data);
+                
+                toast.success(response.data.msg)
+                // setTimeout(() => {
+                //     setdata({
+                //         email:"",
+                //         password:"",
+                //         confirmPassword:""
+                //     })
+                //     navigate('/')
+                // }, 1500);
+            } else {                  // manage success is false
+                toast.error(response.data.msg)
                 setdata({
                     email:"",
                     password:"",
                     confirmPassword:""
                 })
             }
+
         } catch (error) {
+            console.log(error);
+            if(error.response){
+                toast.error(error.response.data?.msg)
+            }else {
+                toast.error("An unexpected error occured")
+            }
             
         }
         

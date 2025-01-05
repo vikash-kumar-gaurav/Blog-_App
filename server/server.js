@@ -7,7 +7,11 @@ import cors from 'cors'
 import userRouter from './src/routes/userRoutes.js'
 import blogRouter from './src/routes/blogRoutes.js'
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:5173', // Allow requests from this origin (React app)
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow specific HTTP methods
+    credentials: true, // Allow cookies or authorization headers
+}));
 const PORT = process.env.PORT || 3000
 connectDB()
 .then(()=>{

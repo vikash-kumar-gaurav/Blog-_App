@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import axios from 'axios'
+import userApi from '../utils/userApi'
 
 
 const Signup = () => {
@@ -23,7 +24,7 @@ const Signup = () => {
 
     const handleSubmit =async (e)=>{
         e.preventDefault()
-        const response = await axios.post('http://localhost:8080/api/v1/user/register',data)
+        const response = await userApi.post('/register',data)
         console.log(response.data);
         
     }
