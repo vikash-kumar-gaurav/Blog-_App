@@ -64,7 +64,9 @@ export async function getAllBlogsController(req,res) {
 //fetch a single blog by ID
 export async function getBlogByIdController(req,res) {
     try {
-        const { id } = req.body
+        const { id } = req.params
+        console.log(id);
+        
 
         const blog = await Blog.findById(id).populate("author", "username email")
         if(!blog){
@@ -74,7 +76,7 @@ export async function getBlogByIdController(req,res) {
             })
         };
 
-        //not return the blog you found 
+        //now return the blog you found 
         return res.status(200).json({
             blog,
             success : true

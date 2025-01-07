@@ -23,20 +23,29 @@ const router = createBrowserRouter([
             },{
                 path:'/register',
                 element:<Signup/>
-            }
-        ]
-
-    },
-    {
-        path:'/blog',
-        element:<Blog/>,
-        children:[
+            },
+            {
+                path:'/blog/:id',
+                element:<Blog/>
+            },
             {
                 path:'blog-create',
                 element:<CreateBlog/>
             },
+
         ]
-    }
+
+    },
+    // {
+    //     path:'/blog/:id',
+    //     element:<Blog/>,
+    //     children:[
+    //         {
+    //             path:'blog-create',
+    //             element:<CreateBlog/>
+    //         },
+    //     ]
+    // }
 ])
 
 export default router

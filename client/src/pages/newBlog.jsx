@@ -25,7 +25,7 @@ const CreateBlog = () => {
     e.preventDefault();
     try {
       const response = await blogApi.post("/create", data);
-      console.log(response);
+      console.log(response.data.blog._id);
       
       
 
@@ -41,7 +41,7 @@ const CreateBlog = () => {
             image: "",
             tags: [],
           });
-          navigate("/blog");
+          navigate(`/blog/${response.data?.blog?._id}`);
         }, 1500);
       } else{
         toast.error(response.data.msg);
@@ -51,7 +51,7 @@ const CreateBlog = () => {
           image: "",
           tags: [],
         });
-        navigate('/login')
+        navigate(`/blog`)
       }
     } catch (error) {
       console.log(error);

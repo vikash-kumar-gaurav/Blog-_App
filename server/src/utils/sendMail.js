@@ -8,8 +8,7 @@ import verifyEmailTemplate from '../MailTemplates/verifyEmailTemplate.js';
 //SEND AN email
 
 const sendMail = async ({email,subject,username})=>{
-    console.log(process.env.MAIL);
-    console.log(process.env.MAIL_PASSWORD);
+    
 
     const transporter = nodemailer.createTransport({
         service:"gmail",
