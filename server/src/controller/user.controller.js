@@ -46,7 +46,7 @@ export async function registerController(req,res){
         res.cookie('accessToken',accessToken,cookieOptions)
 
         //sending a email that you account is created
-        await sendMail({email,subject:"registration",username})
+         sendMail({email,subject:"registration",username})
 
         //send response to the user 
         return res.status(200).json({

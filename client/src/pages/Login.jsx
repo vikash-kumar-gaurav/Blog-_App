@@ -81,7 +81,7 @@ const Login = () => {
 <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-purple-300 via-blue-300 to-indigo-400">
       <div className="bg-white p-8 rounded-xl shadow-2xl w-full max-w-lg">
         <p className="text-center text-2xl font-semibold text-gray-800 mb-6">
-          Welcome back, buddy! Tumahar bhi kat hi gaya, koi nai blog padho ab!
+          Welcome back, buddy! kysa raha ajj ka din 🤔,  Majje mai!
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-6">

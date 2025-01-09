@@ -1,16 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import logo from '/Group 2.png'
 
 const Navbar = () => {
   return (
-    <div className="fixed z-50 w-full">
-        <nav className="flex items-center justify-between px-8 py-6 bg-black/60 backdrop-blur-md shadow-xl border-b border-gray-700 ">
+    <div className="w-full max-h-18 ">
+        <nav className="flex items-center justify-between px-8 py-6 bg-black backdrop-blur-md shadow-xl border-b border-gray-700 ">
       {/* Logo with Bounce Effect */}
       <Link to={'/'}>
       <div 
-        className="text-3xl font-bold text-transparent bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text animate-bounce"
+        className=" animate-bounce"
       >
-        Bloog
+        <img src={logo} style={{height:"60px"}}  />
       </div>
       </Link>
 

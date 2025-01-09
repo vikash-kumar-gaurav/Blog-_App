@@ -1,6 +1,4 @@
- function registerTemlate({username}) {
-    const html=`
-    <html>
+<html>
 <head>
     <style>
         body {
@@ -89,26 +87,23 @@
         
         <!-- Body Content -->
         <div class="body-content">
-            <h2>Account Created</h2>
+            <h2>You're Almost There!</h2>
             <p>
-                Thank you for joining <strong>Blog</strong>, your new destination for blogging and sharing ideas!  start your blogging journey, by creating blogs.
+                Thank you for joining <strong>Bloog</strong>, your new destination for blogging and sharing ideas! To start your blogging journey, please confirm your email address.
             </p>
-            <p> hey ${username} registration done</p>
-            <a href="registration link" class="cta-button"> Registration Completed</a>
-            
+            <p>Click the button below to verify your email and activate your account:</p>
+            <a href="registration link" class="cta-button">Complete Your Registration</a>
+            <p>
+                If you didn't sign up for Bloog, you can safely ignore this email. Your account won't be activated unless you confirm your email.
+            </p>
         </div>
         
         <!-- Footer Section -->
         <div class="footer">
             <p>Best Regards,</p>
-            <p>The Blog Team</p>
+            <p>The Bloog Team</p>
             <p><a href="https://bloog.com">Visit our website</a></p>
         </div>
     </div>
 </body>
 </html>
-`
-        return html
-}
-
-export default registerTemlate

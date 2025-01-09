@@ -23,7 +23,7 @@ const sendMail = async ({email,subject,username})=>{
 
     if(subject === "registration"){
         mailContent={
-            from:`"Bloog" <vikashkumargauravdss@gmail.com>`,
+            from:`"Blog.." <vikashkumargauravdss@gmail.com>`,
             to:email,
             subject:subject,
             html:registerTemlate({username})
