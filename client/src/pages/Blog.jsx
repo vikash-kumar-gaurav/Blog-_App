@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { Outlet, useParams } from 'react-router-dom'
-import blogApi from './utils/blogApi'
+import blogApi from '../utils/blogApi'
 import { useEffect } from 'react'
-import Loading from './pages/Loading'
-import CreatedBlog from './components/CreatedBlog'
+import Loading from './Loading'
+import CreatedBlog from '../components/CreatedBlog'
 
 const Blog = () => {
   const { id } = useParams()

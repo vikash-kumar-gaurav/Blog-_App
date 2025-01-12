@@ -1,5 +1,3 @@
-
-
 import React, { useEffect, useState } from 'react';
 import blogApi from '../utils/blogApi';
 import Loading from './Loading';

@@ -7,11 +7,15 @@ import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
 
-const Login = () => {
+const Login = ({setisLoggedIn, isLoggedIn}) => {
     const[data,setdata] = useState({email:"",password:"",confirmPassword:""})
     const[password,setpassword]= useState(false)
     const[confirmPassword,setconfirmPassword]= useState(false)
     const navigate = useNavigate()
+    if(isLoggedIn){
+      navigate('/')
+      toast.error("already logged In")
+    }
     
     const handleChange  = (e)=>{
         setdata((previous)=>(

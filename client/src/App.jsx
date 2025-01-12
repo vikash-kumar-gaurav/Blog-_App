@@ -6,7 +6,7 @@ import { Toaster } from 'react-hot-toast'
 import Navbar from './components/Navbar'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [isLoggedIn, setisLoggedIn] = useState(true)
 
   return (
     <>
@@ -14,8 +14,8 @@ function App() {
       position="top-center"
       reverseOrder={true}
       />
-      <Navbar/>
-      <Outlet/>
+      <Navbar isLoggedIn={isLoggedIn} setisLoggedIn= {setisLoggedIn}/>
+      <Outlet />
       
     </>
   )

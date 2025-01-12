@@ -128,9 +128,11 @@ export async function loginController(req,res) {
 }
 
 //for reset pssword only to generate otp
-export async function resetPasswordController(req,res) {
+export async function forgotPasswordController(req,res) {
     try {
-        const { email} = req.body
+        const { email } = req.body
+        console.log(email);
+        
         if(!email) {
             return res.status(402).json({
                 msg : "No Account found",
@@ -148,15 +150,16 @@ export async function resetPasswordController(req,res) {
 
         const otp = await generateOtp()
 
-         await user.otp.save();
-         await sendMail({email,otp,username:user.username,subject:"otp verification"})
+          user.otp = otp
+          await user.save()
+          sendMail({email,otp,username:user.username,subject:"otp verification"})// dont use await because it slow down you server as it wait for the response that mail has been send
 
          return res.status(200).json({
             msg : `otp sent to ${user.username}`,
             success : true
          })
     } catch (error) {
-        console.log(`error from resetPasswordController`);
+        console.log(`error from forgotPasswordController ${error}`);
         res.status(500).json({
             msg :"Server Error please try after some time",
             success : false
@@ -165,3 +168,163 @@ export async function resetPasswordController(req,res) {
     }
     
 }
+
+//verify otp 
+export async function otpVerificationController(req,res){
+    try {
+        const { email,otp } = req.body
+
+        if(!email || !otp){
+            return res.status(401).json({
+                msg : "All fields are required i.e Eamil and OTP",
+                success : false
+            })
+        };
+
+        const user = await User.findOne({email})
+        if(!user){
+            return res.status(401).json({
+                msg : "no user found",
+                success : false
+            })  
+        };
+
+        if(otp !== user.otp){
+            return res.status(401).json({
+                msg : "Invalid Otp try again",
+                success : false
+            })
+        }
+
+        return res.status(200).json({
+            msg : "otp matched",
+            success : true
+        })
+    } catch (error) {
+        console.log(`error from otpverificationController ${error}`);
+        return res.status(500).json({
+            msg : "Server Error please try after some time",
+            success : false
+        })
+        
+    }
+}
+
+
+//change password
+export async function changePasswordController(req,res) {
+    try {
+        const { email, password, confirm_password } = req.body 
+        console.log(email,password,confirm_password);
+        
+        if(!email || !password || !confirm_password){
+            return res.status(401).json({
+                msg : " all fields are required i.e email, password and confirm password",
+                success : false
+            })
+        };
+
+        if(password !== confirm_password){
+            return res.status(401).json({
+                msg : " password and Confirm Password must be same",
+                success : false
+            })
+        };
+
+        const user = await User.findOne({email})
+        if(!user){
+            return res.status(401).json({
+                msg : "No user found",
+                success : false
+            })
+        }
+
+        const hasshedPassword =await bcrypt.hash(password,10)
+        user.password = hasshedPassword
+        await user.save()
+        return res.status(200).json({
+            msg : "password changed please logIn",
+            success : true
+        })
+    } catch (error) {
+        console.log(`error from changePasswordController ${error}`);
+        return res.status(500).json({
+            msg : "Server error Please try after sometime",
+            success : false
+        })
+        
+    }
+}
+
+//to send user details
+export async function getUserDetailsController(req,res) {
+    try {
+        const id = req.id //get user id from auth middleware
+        const user = await User.findById(id).select("-role -_id -otp -updatedAt -isEmailVarified -password -createdAt -email -_v")//use after .slect will dont return the given data
+        if(!user){
+            return res.status(401).json({
+                msg : "No user found LogIn first",
+                success : false
+            })
+        }
+
+        
+        return res.status(200).json({
+            msg : "data recived",
+            success : true,
+            user
+        }) 
+    } catch (error) {
+        console.log(`error from getUserDetailsController ${error}`);
+        return res.status(500).json({
+            msg : "Server Error",
+            success : false
+        })
+        
+    }
+    
+}
+
+//update details
+export async function updateuserdetailsController(req,res) {
+    try {
+        const  Id  = req.id
+        const { username, name, bio } = req.body
+        const profilePicture = req.file
+        
+        const updates = {};
+        //making a updates object so that we get only updated data
+        console.log('from updateuserdetails',username, name, profilePicture, bio);
+        
+
+        if(username) updates.username = username
+        if(name) updates.name = name
+        if(bio) updates.bio = bio
+        if(profilePicture) updates.profilePicture = profilePicture.cloudinaryUrl
+        
+        const user = await User.findByIdAndUpdate(Id,{$set:updates},{new:true})
+        //findbyidandupdate find the user using id and only updates only updates field and by default it return the user before updating but new:true send the updated user
+
+        return res.status(200).json({
+            msg : "User Details was updated successfully",
+            success : true,
+            user
+        })
+        
+
+        
+    } catch (error) {
+        console.log(`error from updateuserdetailsController ${error}`);
+        return res.status(500).json({
+            msg : "Server Error please try again",
+            success : false
+        })
+        
+    }
+    
+}
+
+
+
+
+

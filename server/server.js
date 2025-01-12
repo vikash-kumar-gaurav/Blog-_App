@@ -14,6 +14,7 @@ app.use(cors({
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow specific HTTP methods
     credentials: true, // Allow cookies or authorization headers
 }));
+
 const PORT = process.env.PORT || 3000
 connectDB()
 .then(()=>{

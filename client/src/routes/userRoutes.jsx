@@ -3,8 +3,11 @@ import Signup from '../pages/Signup'
 import Home from '../pages/Home'
 import Login from '../pages/Login'
 import App from '../App.jsx'
-import Blog from '../Blog.jsx'
+import Blog from '../pages/Blog.jsx'
 import CreateBlog from '../pages/newBlog.jsx'
+import ForgotPassword from '../pages/ForgotPassword.jsx'
+import ChangePassword from '../pages/ChangePassword.jsx'
+import UpdateUserDetails from '../pages/UpdateUserDetails.jsx'
 
 const router = createBrowserRouter([
     {
@@ -32,20 +35,23 @@ const router = createBrowserRouter([
                 path:'blog-create',
                 element:<CreateBlog/>
             },
+            {
+                path:'/forgot-password',
+                element:<ForgotPassword/>
+            },
+            {
+                path:'/change-password',
+                element:<ChangePassword/>
+            },
+            {
+                path:'/update-userDetails',
+                element:<UpdateUserDetails/>
+            }
 
         ]
 
     },
-    // {
-    //     path:'/blog/:id',
-    //     element:<Blog/>,
-    //     children:[
-    //         {
-    //             path:'blog-create',
-    //             element:<CreateBlog/>
-    //         },
-    //     ]
-    // }
+   
 ])
 
 export default router
