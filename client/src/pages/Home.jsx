@@ -28,8 +28,8 @@ const Home = () => {
 
   return (
     <div 
-      className='bg-[url("https://images.unsplash.com/photo-1718467009921-ea9c627852bd?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGElMjBzaWdtYSUyMG1hbnxlbnwwfDB8MHx8fDA%3D")]
-                bg-cover bg-center max-h-screen min-w-screen overflow-scroll flex gap-3 flex-wrap pt-15'
+      className='bg-[url("https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExcjJ6eHEzeDVvbXE4Y3c3Zmtrejk2dWUyYTh6OGsyc2lzZHFrbDFmaCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/TW8Ma1a8ZsZ8I/giphy.gif")]
+                bg-cover bg-center max-h-screen min-w-screen overflow-scroll flex gap-3 flex-wrap pt-15 min-h-screen'
     >
       {loading ? (
         <Loading />
@@ -44,7 +44,9 @@ const Home = () => {
             username={blog.author?.username}
             _id={blog._id}
             comments={blog.comments}
+            image={blog.image}
           />
+          
         ))
       ) : (
         <p className="text-center text-gray-600 mt-10">No blogs available</p>

@@ -1,7 +1,10 @@
 import Blog from '../models/blog.model.js'
 //create a new blog post 
 export async function createBlogController(req,res) {
-    const { title, content, image, tags } = req.body
+    const { title, content, tags } = req.body
+     const blogPicture = req.file
+     console.log(title, content,tags,blogPicture);
+     
 
     try {
         //validate the require data
@@ -16,8 +19,8 @@ export async function createBlogController(req,res) {
         const blog = await Blog.create({
             title,
             content,
-            image,
             tags,
+            image:blogPicture.cloudinaryUrl,
            
             author:req.id //add usernameId to it in middleware
 
@@ -174,42 +177,99 @@ export async function deleteBlogController(req,res) {
     
 }
 //like or unlike a blog post
-export async function togglelikeController(req,res) {
-    try {
-        const { id } = req.params
-
-        const blog = await Blog.findById(id);
-        if(!blog){
-            return res.status(404).json({
-                msg : "No blog found",
-                success : true
-            })
-        };
-
-        const userId = req.user.id;
-        const isLiked = blog.likes.includes(userId)
-
-        if(isLiked){
-            blog.likes = blog.likes.filter((like)=>like.toString() !== userId);
-        }else {
-            blog.likes.push(userId)
-        };
-
-        await blog.save()
-        return res.status(200).json({
-            msg : isLiked ? "Blog unliked" : "Blog liked",
-            likes : blog.likes
-        })
-    } catch (error) {
-        console.log(`error from togglelikeController ${error}`);
-        return res.status(500).json({
-            msg : "Server Error please try later",
-            success : false
-        })
+// export async function togglelikeController(req,res) {
+//     try {
+//         const { _id } = req.body
+//         const id = _id
+//         const userId = req.id;
+//         console.log('id from togglelikeController',id);
+//         console.log('userid from togglelikeController', userId);
         
-    }
+
+//         const blog = await Blog.findById(id);
+//         if(!blog){
+//             return res.status(404).json({
+//                 msg : "No blog found",
+//                 success : true
+//             })
+//         };
+
+        
+        
+        
+//         const isLiked = blog.likes.includes(userId)
+
+//         if(isLiked){
+//             blog.likes = blog.likes.filter((like)=>like.toString() !== userId);
+//         }else {
+//             blog.likes.push(userId)
+//         };
+
+//         await blog.save()
+//         return res.status(200).json({
+//             msg : isLiked ? "Blog unliked" : "Blog liked",
+//             success:true,
+//             likes : blog.likes
+//         })
+//     } catch (error) {
+//         console.log(`error from togglelikeController ${error}`);
+//         return res.status(500).json({
+//             msg : "Server Error please try later",
+//             success : false
+//         })
+        
+//     }
     
-}
+// }
+
+export async function togglelikeController(req, res) {
+    try {
+      const { _id } = req.body;
+      const id = _id;
+      const userId = req.id;
+      console.log('id from togglelikeController', id);
+      console.log('userId from togglelikeController', userId);
+  
+      const blog = await Blog.findById(id);
+      if (!blog) {
+        return res.status(404).json({
+          msg: "No blog found",
+          success: false
+        });
+      }
+  
+      // Ensure blog.likes is an array and filter out any invalid values
+      blog.likes = blog.likes.filter((like) => like && like.toString);
+  
+      // Check if userId exists in the blog's likes array
+      const isLiked = blog.likes.some((like) => like.toString() === userId);
+  
+      if (isLiked) {
+        // Remove userId from the likes array
+        blog.likes = blog.likes.filter((like) => like.toString() !== userId);
+      } else {
+        // Add userId to the likes array
+        blog.likes.push(userId);
+      }
+  
+      // Save the updated blog document
+      await blog.save();
+  
+      return res.status(200).json({
+        msg: isLiked ? "Blog unliked" : "Blog liked",
+        success: true,
+        likes: blog.likes.length // Return the updated like count
+      });
+    } catch (error) {
+      console.log(`error from togglelikeController: ${error}`);
+      return res.status(500).json({
+        msg: "Server error, please try again later",
+        success: false
+      });
+    }
+  }
+  
+  
 
 
 //add a comment to a blog
@@ -251,4 +311,34 @@ export async function addCommentController(req,res) {
         })
     }
     
+}
+
+
+//find all blogs of author or user that is logged in
+export async function getAllUserBlogsController(req,res){
+    try {
+         const id = req.id
+        console.log(id);
+        
+        if(!id){
+            return res.status(402).json({
+                msg : "no User find",
+                success : false
+            })
+        };
+
+        const blogs = await Blog.find({author:id})
+
+        return res.status(200).json({
+            success : true,
+            msg : "Your all blogs",
+            blogs
+        })
+    } catch (error) {
+        console.log(`error from getAllUserBlogsController ${error}`);
+        return res.status(200).json({
+            success : false,
+            msg : "Server Error try later"
+        })
+    }
 }

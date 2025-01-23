@@ -1,8 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import logo from '/Group 2.png'
+import { useSelector } from "react-redux";
+import Loading from "../pages/Loading";
 
-const Navbar = ({setisLoggedIn,isLoggedIn}) => {
+const Navbar = () => {
   // return (
   //   <div className="w-full max-h-18 ">
   //       <nav className="flex items-center justify-between px-8 py-6 bg-black backdrop-blur-md shadow-xl border-b border-gray-700 ">
@@ -35,20 +37,23 @@ const Navbar = ({setisLoggedIn,isLoggedIn}) => {
   //   </nav>
   //   </div>
   // );
-
+ const{isLoggedIn,user} = useSelector((state) => state.user)
+ console.log(isLoggedIn,user);
+ const imageUrl = useSelector((state) => state.user?.user?.profilePicture)
+ 
+ 
   return(
     <>
     <div className="h-auto w-full flex justify-between items-center border-2 border-black bg-black px-20">
       <div><Link to={'/'}><img src={logo} style={{height:'80px'}} /></Link></div>
+      <Loading/>
       <div>
         {isLoggedIn ? (
-          <div className="md:block hidden">
-            <ul className="gap-4 text-white flex underline">
-              <li><Link to={'/'}>Home</Link></li>
-              <li><Link to={'/blog-create'}>Create Blog</Link></li>
-              <li><Link to={'/view-blogs'}>View Your Blog</Link></li>
-              
-            </ul>
+          <div className="md:block hidden text-white gap-5">
+
+            <button className="h-10 rounded-md bg-blue-500 font-bold pt-2 mr-5 pb-4 overflow-hidden hover:bg-rose-600"><Link to={'/'}>Home</Link></button>
+            <button className="h-10 rounded-md bg-blue-500 font-bold pt-2 mr-5 pb-4 overflow-hidden hover:bg-rose-600"><Link to={'/blog-create'}>Create Blog</Link></button>
+            <button className="h-10 rounded-md bg-blue-500 font-bold pt-2 mr-5 pb-4 overflow-hidden hover:bg-rose-600"><Link to={'/user-all-blogs'}>View your Blog</Link></button>
           </div>
         ) : (
           null
@@ -58,11 +63,14 @@ const Navbar = ({setisLoggedIn,isLoggedIn}) => {
         <div >
           
           {isLoggedIn ? (
-            <div className="rounded-full w-20 h-20">
-              <img src={logo} style={{height:'80px'}} alt="" />
+            <div className="rounded-full w-20 h-20 m-auto pt-5">
+              <img src={imageUrl}  alt="" className="rounded-full size-12"/>
             </div>
           ) : (
+            <>
+            <button className="bg-blue-400 text-white font-extrabold px-6 py-2 rounded-md mr-5"><Link to={'/register'}>SignIn</Link></button>
             <button className="bg-blue-400 text-white font-extrabold px-6 py-2 rounded-md"><Link to={'/login'}>LogIn</Link></button>
+            </>
           )}
 
         </div>

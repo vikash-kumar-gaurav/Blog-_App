@@ -8,9 +8,19 @@ import jwt from 'jsonwebtoken'
 //for new user to register
 export async function registerController(req,res){
     try {
-        const {email,username,password,profilePicture,role,bio} = req.body
+        const {email,username,password,name,confirmPassword,mobileNo} = req.body
+        const profilePicture = req.file
+        
+        
 
-        if(!email ||!username ||!password){
+        if(password !== confirmPassword){
+            return res.json({
+                msg : "Confirm Password and Password must be same",
+                success : false
+            })
+        }
+
+        if(!email ||!username ||!password ||!name){
             return res.status(402).json({
                 success : false,
                 msg : "Please provide all details i.e Email, Password and username"
@@ -27,14 +37,21 @@ export async function registerController(req,res){
 
         const hasshedPassword = await bcrypt.hash(password,10)
 
-        await User.create({email,password:hasshedPassword,username})
+        await User.create({email,
+            password:hasshedPassword,
+            username,
+            Name:name,
+            profilePicture:profilePicture.cloudinaryUrl,
+            mobile_no:mobileNo
+        })
         
         const userData = await User.findOne({email})
         const accessToken =await generateAccessToken({
             _id:userData._id,
             username:userData.username,
             role:userData.role,
-            email:userData.email
+            email:userData.email,
+            name:userData.Name
         })
         const tokenData = jwt.verify(accessToken,process.env.SECRET_TOKEN_KEY)
 
@@ -100,7 +117,9 @@ export async function loginController(req,res) {
             email:email,
             username:validEmail.username,
             _id:validEmail._id,
-            role:validEmail.role
+            role:validEmail.role,
+            profilePicture:validEmail.profilePicture,
+            Name:validEmail.Name
         })
 
         const cookieOptions ={
@@ -113,7 +132,8 @@ export async function loginController(req,res) {
         //now give the response to the user
         return res.status(200).json({
             msg : `Login successfull ${validEmail.username}`,
-            success : true
+            success : true,
+            validEmail
         })
 
     } catch (error) {

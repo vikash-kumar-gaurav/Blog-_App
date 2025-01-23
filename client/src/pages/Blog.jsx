@@ -4,6 +4,7 @@ import blogApi from '../utils/blogApi'
 import { useEffect } from 'react'
 import Loading from './Loading'
 import CreatedBlog from '../components/CreatedBlog'
+import SingleBlogCard from '../components/BigBlogCard'
 
 const Blog = () => {
   const { id } = useParams()
@@ -44,15 +45,20 @@ const Blog = () => {
   }
 
   return (
-    <CreatedBlog
-      title={data.title}
-      username={data.author?.username}
-      content={data.content}
-      like={data.likes}
-      tags={data.tags}
-      image={data.image}
-      comments={data.comments}
+    <>
+    
+    <SingleBlogCard
+     title={data.title}
+     username={data.author?.username}
+     content={data.content}
+     likes={data.likes}
+     tags={data.tags}
+     image={data.image}
+     comments={data.comments}
+     _id= {data._id}
+    
     />
+    </>
   )
 }
 

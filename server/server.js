@@ -10,7 +10,7 @@ import cookieParser from 'cookie-parser';
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: 'http://localhost:5173', // Allow requests from this origin (React app)
+    origin: 'http://localhost:5173', // Allow requests from this origin (React app) 
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow specific HTTP methods
     credentials: true, // Allow cookies or authorization headers
 }));

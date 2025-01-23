@@ -1,16 +1,17 @@
-
 import React, { useState } from "react";
 import blogApi from "../utils/blogApi";
 import { useNavigate } from "react-router-dom";
-import toast from 'react-hot-toast'
+import toast from "react-hot-toast";
 
 const CreateBlog = () => {
   const [data, setData] = useState({
     title: "",
     content: "",
-    tags: [],
-    image: "",
+    tags: "",
+    profilePicture: null,
+    preview: "",
   });
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -21,55 +22,63 @@ const CreateBlog = () => {
     }));
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setData((prev) => ({
+        ...prev,
+        profilePicture: file,
+        preview: URL.createObjectURL(file),
+      }));
+    }
+  };
+
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const response = await blogApi.post("/create", data);
-      console.log(response.data.blog._id);
-      
-      
+      const formData = new FormData();
+      formData.append("title", data.title);
+      formData.append("content", data.content);
+      formData.append("tags", data.tags);
+      formData.append("profilePicture", data.profilePicture);
 
-      if(response.data.success){
-        
-        toast.success("blog added")
-        
-        
+      const response = await blogApi.post("/create", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      if (response.data.success) {
+        toast.success("Blog added successfully!");
         setTimeout(() => {
           setData({
             title: "",
             content: "",
-            image: "",
-            tags: [],
+            tags: "",
+            profilePicture: null,
+            preview: "",
           });
-          navigate(`/blog/${response.data?.blog?._id}`);
+          navigate(`/blog/${response.data.blog._id}`);
         }, 1500);
-      } else{
+      } else {
         toast.error(response.data.msg);
-        setData({
-          title: "",
-          content: "",
-          image: "",
-          tags: [],
-        });
-        navigate(`/blog`)
       }
     } catch (error) {
-      console.log(error);
-      
-      toast.error(error.response ? error.response.data.msg : error.msg)
-      navigate('/login')
-      }
+      console.error(error);
+      toast.error(
+        error.response ? error.response.data.msg : "Something went wrong!"
+      );
+      navigate("/login");
+    }
   };
 
   const validValues = data.title.trim() !== "" && data.content.trim() !== "";
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gradient-to-br from-gray-800 to-black p-6">
-      <div className="bg-white/20 backdrop-blur-xl p-6 rounded-xl shadow-lg w-full max-w-lg animate-fadeIn">
-        <p className="text-center text-xl text-white mb-6">
-          No one is judging you, so write honestly 🔥
-        </p>
-        <form onSubmit={submitHandler}>
+    <div className="min-h-screen flex justify-center items-center bg-gradient-to-br from-gray-900 via-gray-800 to-black p-6">
+      <div className="bg-white/10 backdrop-blur-lg p-8 rounded-2xl shadow-xl w-full max-w-3xl">
+        <h2 className="text-center text-2xl text-white mb-8">
+          Share Your Thoughts ✨
+        </h2>
+        <form onSubmit={submitHandler} encType="multipart/form-data">
           <label htmlFor="title" className="block text-white text-sm mb-2">
             Title
           </label>
@@ -78,8 +87,8 @@ const CreateBlog = () => {
             name="title"
             value={data.title}
             onChange={handleChange}
-            placeholder="Ex: My Dark Side"
-            className="w-full p-3 mb-4 rounded-lg border-none bg-white/10 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-black transition"
+            placeholder="Ex: My Journey"
+            className="w-full p-4 mb-4 rounded-lg bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 transition"
             required
           />
 
@@ -90,25 +99,31 @@ const CreateBlog = () => {
             name="content"
             value={data.content}
             onChange={handleChange}
-            placeholder="I like to keep things mysterious..."
-            className="w-full p-3 mb-4 rounded-lg border-none bg-white/10 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-black transition"
+            placeholder="Write your story here..."
+            rows="8"
+            className="w-full p-4 mb-4 rounded-lg bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 transition"
             required
           />
 
-          <label htmlFor="Image" className="block text-white text-sm mb-2">
+          <label htmlFor="image" className="block text-white text-sm mb-2">
             Image
           </label>
           <input
             type="file"
             name="image"
-            className="w-full p-3 mb-4 rounded-lg border-none bg-white/10 text-white focus:outline-none focus:ring-2 focus:ring-black transition"
-            onChange={(e) =>
-              setData((prev) => ({
-                ...prev,
-                image: e.target.files[0],
-              }))
-            }
+            accept="image/*"
+            className="w-full p-4 mb-4 rounded-lg bg-white/20 text-white focus:outline-none focus:ring-2 focus:ring-gray-500 transition"
+            onChange={handleImageChange}
           />
+          {data.preview && (
+            <div className="mb-4">
+              <img
+                src={data.preview}
+                alt="Preview"
+                className="w-full h-64 object-cover rounded-lg shadow-md"
+              />
+            </div>
+          )}
 
           <label htmlFor="tags" className="block text-white text-sm mb-2">
             Tags
@@ -118,15 +133,15 @@ const CreateBlog = () => {
             name="tags"
             value={data.tags}
             onChange={handleChange}
-            placeholder="mystery, darkness, rebellion"
-            className="w-full p-3 mb-6 rounded-lg border-none bg-white/10 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-black transition"
+            placeholder="Ex: journey, inspiration"
+            className="w-full p-4 mb-6 rounded-lg bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 transition"
           />
 
           <button
             type="submit"
-            className={`w-full py-3 text-lg rounded-lg text-white ${
+            className={`w-full py-4 text-lg rounded-lg text-white font-semibold ${
               validValues
-                ? "bg-gradient-to-r from-gray-600 to-black hover:from-gray-700 hover:to-black"
+                ? "bg-gradient-to-r from-orange-500 to-orange-700 hover:from-orange-600 hover:to-orange-800"
                 : "bg-gray-500 cursor-not-allowed"
             } transition`}
             disabled={!validValues}
@@ -139,4 +154,4 @@ const CreateBlog = () => {
   );
 };
 
-export default CreateBlog
+export default CreateBlog;

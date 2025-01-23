@@ -23,13 +23,23 @@ const blogSchema = new mongoose.Schema({
         type : [String],
         default: []
     },
-    likes : [
-        {
-        type : mongoose.Schema.Types.ObjectId,
-        ref : 'User',
-        default : [],
-        }
-    ],
+    // likes : [
+    //     {
+    //     type : mongoose.Schema.Types.ObjectId,
+    //     ref : 'User',
+    //     default : [],
+    //     }
+    // ],
+    likes: {
+        type: [
+          {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+          },
+        ],
+        default: [],
+      },
+      
     comments :[
     {
         user: {type : mongoose.Schema.Types.ObjectId, ref : 'User'},

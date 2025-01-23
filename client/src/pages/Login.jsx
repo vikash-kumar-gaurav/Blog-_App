@@ -1,21 +1,28 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { VscEyeClosed } from "react-icons/vsc";
 import { FaEye } from "react-icons/fa";
 import userApi from '../utils/userApi';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import { useSelector,useDispatch } from "react-redux";
+import { login } from '../Redux/featers/userSlice';
 
 
-const Login = ({setisLoggedIn, isLoggedIn}) => {
+
+const Login = () => {
+    const{isLoggedIn} = useSelector((state) => state.user)
+    const dispatch = useDispatch()
     const[data,setdata] = useState({email:"",password:"",confirmPassword:""})
     const[password,setpassword]= useState(false)
     const[confirmPassword,setconfirmPassword]= useState(false)
     const navigate = useNavigate()
-    if(isLoggedIn){
-      navigate('/')
-      toast.error("already logged In")
-    }
+    useEffect(() => {
+      if(isLoggedIn){
+        navigate('/')
+        toast.error("already logged In")
+      }
+    },[])
     
     const handleChange  = (e)=>{
         setdata((previous)=>(
@@ -46,7 +53,9 @@ const Login = ({setisLoggedIn, isLoggedIn}) => {
             
 
             if(response.data.success){ //manage success true
-                console.log(response.data);
+                console.log(response.data?.validEmail);
+                dispatch(login(response.data?.validEmail))
+
                 
                 toast.success(response.data.msg)
                 setTimeout(() => {

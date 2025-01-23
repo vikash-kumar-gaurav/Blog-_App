@@ -17,10 +17,14 @@ async function accessTokenvalidator(req,res,next){
                 success : false
             })
         };
+        
+        
 
         //verify token 
         const tokenData = jwt.verify(token,process.env.SECRET_TOKEN_KEY);
         req.id=tokenData._id
+        
+        
         
         next()
 

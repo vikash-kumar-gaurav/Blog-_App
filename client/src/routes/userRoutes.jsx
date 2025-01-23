@@ -8,6 +8,7 @@ import CreateBlog from '../pages/newBlog.jsx'
 import ForgotPassword from '../pages/ForgotPassword.jsx'
 import ChangePassword from '../pages/ChangePassword.jsx'
 import UpdateUserDetails from '../pages/UpdateUserDetails.jsx'
+import UserAllblogs from '../pages/UserAllblogs.jsx'
 
 const router = createBrowserRouter([
     {
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
             {
                 path:'/update-userDetails',
                 element:<UpdateUserDetails/>
+            },
+            {
+                path:'/user-all-blogs',
+                element:<UserAllblogs/>
             }
 
         ]
