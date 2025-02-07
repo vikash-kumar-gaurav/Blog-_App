@@ -56,8 +56,10 @@ export async function registerController(req,res){
         const tokenData = jwt.verify(accessToken,process.env.SECRET_TOKEN_KEY)
 
         const cookieOptions ={
-            secure:false,//use true in production
-            httpOnly:true /// the accessToken will not stored in the localStorage so u can't access with js
+            secure:true,//use true in production
+            httpOnly:true, /// the accessToken will not stored in the localStorage so u can't access with js
+            sameSite:'none',
+            maxAge: 24 * 60 * 60 * 1000, // 1 day
         }
 
         res.cookie('accessToken',accessToken,cookieOptions)
@@ -123,8 +125,10 @@ export async function loginController(req,res) {
         })
 
         const cookieOptions ={
-            secure:false,//use true in production
-            httpOnly:true /// the accessToken will not stored in the localStorage so u can't access with js
+            secure:true,//use true in production
+            httpOnly:true, /// the accessToken will not stored in the localStorage so u can't access with js
+            sameSite:'none',
+            maxAge: 24 * 60 * 60 * 1000, // 1 day
         }
 
         res.cookie('accessToken',accessToken,cookieOptions)
@@ -328,7 +332,12 @@ export async function updateuserdetailsController(req,res) {
         return res.status(200).json({
             msg : "User Details was updated successfully",
             success : true,
-            user
+            userData:{
+                _id:user._id,
+                Name:user.Name,
+                role:user.role,
+                profilePicture:user.profilePicture
+            }
         })
         
 
@@ -342,6 +351,39 @@ export async function updateuserdetailsController(req,res) {
         
     }
     
+}
+
+//logout controller
+export async function LogoutController(req,res){
+    const UserId = req.id
+    
+    try {
+        
+        
+        
+
+        if(!UserId){
+            console.log(`user id from LogoutController ${UserId}`);
+            return res.status(401).json({
+                
+                msg : "Token expire already",
+                success : true
+            })
+        }
+
+        res.clearCookie("accessToken")
+        res.status(200).json({
+            msg : "Logout successfully",
+            success : true
+        })
+    } catch (error) {
+        console.log(`error from LogoutController ${error}` );
+        return res.status(500).json({
+            msg : "Server Error please try later",
+            success : false
+        })
+        
+    }
 }
 
 

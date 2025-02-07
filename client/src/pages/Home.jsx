@@ -28,12 +28,12 @@ const Home = () => {
 
   return (
     <div 
-      className='bg-[url("https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExcjJ6eHEzeDVvbXE4Y3c3Zmtrejk2dWUyYTh6OGsyc2lzZHFrbDFmaCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/TW8Ma1a8ZsZ8I/giphy.gif")]
-                bg-cover bg-center max-h-screen min-w-screen overflow-scroll flex gap-3 flex-wrap pt-15 min-h-screen'
+      className='bg-[url("https://images.unsplash.com/photo-1498674202614-ac0172c6c61a?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")]
+                bg-cover bg-center max-h-screen min-w-screen overflow-scroll flex gap-3 flex-wrap pt-15 min-h-screen justify-center items-center'
     >
       {loading ? (
         <Loading />
-      ) : data.length > 0 ? (
+      ) : data?.length > 0 ? (
         data.map((blog) => (
           <BlogCard
             key={blog._id} // Unique key for each blog

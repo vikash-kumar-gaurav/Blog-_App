@@ -1,5 +1,5 @@
 import Router from 'express'
-import { loginController, registerController,updateuserdetailsController,getUserDetailsController, forgotPasswordController, otpVerificationController, changePasswordController } from '../controller/user.controller.js'
+import { loginController, registerController,updateuserdetailsController,getUserDetailsController, forgotPasswordController, otpVerificationController, changePasswordController, LogoutController } from '../controller/user.controller.js'
 import accessTokenvalidator from '../middleware/auth.middleware.js'
 import upload from '../middleware/multer.middleware.js'
 import { uploadOnCloudinary } from '../middleware/uploadonCloudinary.js'
@@ -14,6 +14,7 @@ router.post('/change-password',changePasswordController)
 router.get('/getUser-details',accessTokenvalidator,getUserDetailsController)
 router.put('/update-userdetails',accessTokenvalidator,upload.single("profilePicture"),uploadOnCloudinary,updateuserdetailsController)
 //use accessToken to get id of user and send to updateuserdetailsController
-router.get('/auth-check',InitalTokenCheck)
+router.get('/auth-check',InitalTokenCheck) //to check token and save data to frontend using redux
+router.get('/logout',accessTokenvalidator,LogoutController)
 
 export default router; 

@@ -10,7 +10,7 @@ import cookieParser from 'cookie-parser';
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: 'http://localhost:5173', // Allow requests from this origin (React app) 
+    origin: 'https://blog2you.netlify.app', // Allow requests from this origin (React app) 
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow specific HTTP methods
     credentials: true, // Allow cookies or authorization headers
 }));
@@ -18,7 +18,7 @@ app.use(cors({
 const PORT = process.env.PORT || 3000
 connectDB()
 .then(()=>{
-    app.listen(PORT,()=>{
+    app.listen(PORT,'0.0.0.0',()=>{
         console.log(`app is listening on the port no ${PORT}`);
         
     })

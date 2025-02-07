@@ -3,8 +3,11 @@ import React, { useEffect, useState } from "react";
 import userApi from "../utils/userApi";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { login } from "../Redux/featers/userSlice";
+import { useDispatch } from "react-redux";
 
 const UpdateUserDetails = () => {
+  const dispatch = useDispatch()
   const navigate = useNavigate();
   const [userdata, setuserdata] = useState({
     name: "",
@@ -62,6 +65,8 @@ const UpdateUserDetails = () => {
     );
       console.log(response.data?.msg);
       toast.success(response.data?.msg);
+      dispatch(login(response.data?.userData))
+      navigate('/')
     } catch (error) {
       console.error(error);
       toast.error("Error updating details.");

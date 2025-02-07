@@ -6,7 +6,7 @@ import Loading from './Loading'
 const UserAllblogs = () => {
     const[data,setdata] = useState([])
     const [loading, setloading] = useState(false)
-
+    
     useEffect(() => {
         fetchData()
     },[])
@@ -26,7 +26,7 @@ const UserAllblogs = () => {
     }
   return ( 
 
-    <div>
+    <div className='flex flex-wrap gap-3 items-center justify-center content-center'>
         {
         loading ? (
             <Loading/>

@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react'
 
 import './App.css'
 import { Outlet } from 'react-router-dom'
-import { Toaster } from 'react-hot-toast'
+import toast, { Toaster } from 'react-hot-toast'
 import Navbar from './components/Navbar'
-import { login, logout } from './Redux/featers/userSlice'
+import { login, logOut } from './Redux/featers/userSlice'
 
 import { useDispatch } from 'react-redux'
 import userApi from './utils/userApi'
@@ -21,6 +21,7 @@ function App() {
       console.log('response from app.js',response.data);
       if(response.data?.userData){
         dispatch(login(response.data?.userData))
+        
       }
       
     } catch (error) {

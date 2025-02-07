@@ -37,7 +37,13 @@ const Blog = () => {
     
   }
   if (loading) {
-    return <Loading />
+    return (
+      <>
+       <div className='flex justify-center items-center'>
+        <Loading/>
+       </div>
+      </>
+    )
   }
 
   if (!data) {
